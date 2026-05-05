@@ -1,6 +1,11 @@
-# Pretrain a Transformer on Language Modeling
+# Pretrain a Transformer-like model on Language Modeling
 A minimal yet efficient implementation of causal language modeling in PyTorch.
 
+This repository is a fork of [Niccolo-Ajroldi/plainLM](https://github.com/Niccolo-Ajroldi/plainLM).
+It extends the original codebase with higher-order parallel scan implementation and additional model families, including HLRU, BDLRU, LSTM, and Mamba2.
+This codebase is supplementary to the paper "Improved State Mixing in Higher-order and Block Diagonal Linear Recurrent Networks".
+
+# Original PlainLM description
 It features a custom torch-compilable Transformer model implementation supporting RoPE, GLU, and RMSNorm.
 It supports distributed training via Distributed Data Parallel (DDP).
 
@@ -69,6 +74,9 @@ plainLM/
 - add seed to `DistributedSampler`
 
 ## Citation
+This repository accompanies the paper "Improved State Mixing in Higher-order and Block Diagonal Linear Recurrent Networks".
+If you use this codebase, please cite the paper and the original `plainLM` project:
+
 ```bibtex
 @misc{ajroldi2024plainlm,
   author = {Niccolò Ajroldi},
