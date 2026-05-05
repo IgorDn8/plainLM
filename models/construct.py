@@ -25,6 +25,74 @@ def construct_model(cfg):
     )
     model = Transformer(model_cfg)
 
+  elif cfg.model == "bdlru":
+    from .bdlru import Transformer, ModelConfig
+    model_cfg = ModelConfig(
+      vocab_size = cfg.vocab_size,
+      dim = cfg.d_model,
+      expand = float(Fraction(cfg.expand)),
+      n_layers = cfg.n_layers,
+      hidden_dim = cfg.hidden_dim,
+      window_dim = cfg.window_dim,
+      implementation = cfg.implementation,
+      rmsorm_eps = 1e-6,
+      mlp = cfg.mlp_class,
+      seq_len = cfg.seq_len,
+      tie_embeddings = cfg.tie_embeddings
+    )
+    model = Transformer(model_cfg)
+
+  elif cfg.model == "hlru":
+    from .hlru import Transformer, ModelConfig
+    model_cfg = ModelConfig(
+      vocab_size = cfg.vocab_size,
+      dim = cfg.d_model,
+      expand = float(Fraction(cfg.expand)),
+      n_layers = cfg.n_layers,
+      hidden_dim = cfg.hidden_dim,
+      window_dim = cfg.window_dim,
+      implementation = cfg.implementation,
+      rmsorm_eps = 1e-6,
+      mlp = cfg.mlp_class,
+      seq_len = cfg.seq_len,
+      tie_embeddings = cfg.tie_embeddings
+    )
+    model = Transformer(model_cfg)
+  
+  elif cfg.model == "mamba2":
+    from .mamba2 import Transformer, ModelConfig
+    model_cfg = ModelConfig(
+      vocab_size = cfg.vocab_size,
+      dim = cfg.d_model,
+      expand = float(Fraction(cfg.expand)),
+      n_layers = cfg.n_layers,
+      # Use defaults for Mamba2 specific params or extract from cfg if available
+      d_state = getattr(cfg, "d_state", 64),
+      d_conv = getattr(cfg, "d_conv", 4),
+      mamba_expand = getattr(cfg, "mamba_expand", 2),
+      headdim = getattr(cfg, "headdim", 64),
+      ngroups = getattr(cfg, "ngroups", 1),
+      rmsorm_eps = 1e-6,
+      mlp = cfg.mlp_class,
+      seq_len = cfg.seq_len,
+      tie_embeddings = cfg.tie_embeddings
+    )
+    model = Transformer(model_cfg)
+
+  elif cfg.model == "lstm":
+    from .lstm import Transformer, ModelConfig
+    model_cfg = ModelConfig(
+      vocab_size = cfg.vocab_size,
+      dim = cfg.d_model,
+      expand = float(Fraction(cfg.expand)),
+      n_layers = cfg.n_layers,
+      hidden_dim = getattr(cfg, "hidden_dim", 64),
+      rmsorm_eps = 1e-6,
+      mlp = cfg.mlp_class,
+      seq_len = cfg.seq_len,
+      tie_embeddings = cfg.tie_embeddings
+    )
+    model = Transformer(model_cfg)
   # Pythia
   elif cfg.model.startswith('pythia'):
     from transformers import AutoConfig, AutoModelForCausalLM

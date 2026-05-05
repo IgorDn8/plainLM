@@ -1,0 +1,75 @@
+## CONFIG file
+## change paths with your own!
+
+deterministic: False
+seed: 100
+
+trainset_path: "~/plainLM/data/fwedu_sample_10B_tokenizer_GPTNeoX/tokenized_EleutherAI_gpt-neox-20b/ctx_2048/train"
+vocab_size: 50280
+seq_len: 2048
+sampler: 'sequential'
+sampler_seed: null
+num_workers: 4
+
+eval: False
+validset_path: null
+eval_every_steps: null
+
+model: 'bdlru'
+d_model: 768
+mlp_class: 'glu'
+expand: '8/3'
+n_layers: 12
+hidden_dim: 96
+window_dim: 8
+implementation: "hopscan_opt"
+rms_norm: True
+tie_embeddings: False
+torch_compile: True
+
+# note: step budget=token_budget/(seq_len * micro_batch_size * grad_accumulation_steps * ddp_world_size)
+steps_budget: 18850
+
+# note: this is micro batch size if grad_accumulation_steps>1
+# note: with ddp, effective batch size = batch_size * grad_accumulation_steps * ddp_world_size
+micro_batch_size: 32
+grad_accumulation_steps: 8
+
+# note: choose between {float32, float16, bfloat16}
+# note: float16 data type will automatically use a GradScaler
+dtype: 'bfloat16'
+
+optim: 'adamw'
+fused_optim: True 
+lr: 6.e-3
+weight_decay: 0.1
+beta1: 0.9
+beta2: 0.95
+grad_clip: 1.0
+
+scheduler: 'warmup_cosine'
+warmup_steps: 0.1
+cooldown_steps: null
+lr_start: 0.0
+lr_end: 1.e-5
+lr_end_pct: null
+
+log_every_steps: 1
+print_progress: True
+
+use_wandb: True
+wandb_project: 'llm_fin'
+wandb_dir: '~/plainLM/wandb_logs'
+wandb_run_name: 'bdlru m8 h96 10B lr6e3'
+exp_name: 'bdlru_m8_h96_10B_lr6e3'
+out_dir: '~/plainLM/results'
+over_write: True
+
+resume: False
+resume_step: null
+resume_exp_name: null
+
+save_last_checkpoint: True
+save_intermediate_checkpoints: False
+save_every_steps: null
+
